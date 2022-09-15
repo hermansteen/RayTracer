@@ -1,8 +1,11 @@
+#pragma once
 #include "definitions.hpp"
 #include <Polygon.hpp>
 
 class Ray {
 public:
+	Ray();
+	~Ray();
 
 private:
 	vec3 startPoint;
