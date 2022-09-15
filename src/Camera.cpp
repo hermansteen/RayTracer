@@ -1,10 +1,14 @@
 #include "Camera.hpp"
 #include <fstream>
 
-void Camera::render(Scene& _scene) {
+Camera::Camera() {
 
 }
 
+void Camera::render(Scene& _scene) {
+
+}
+//Save as .ppm-file
 void Camera::saveImage(Scene& _scene)
 {
 	const int width = 800, height = 800;

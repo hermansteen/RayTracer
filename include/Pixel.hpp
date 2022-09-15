@@ -10,5 +10,4 @@ public:
 private:
 	//ostream operator
 	friend std::ostream& operator<<(std::ostream& os, const Pixel& p);
-	vec3 position;
 };
