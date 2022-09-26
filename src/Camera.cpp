@@ -21,11 +21,7 @@ void Camera::saveImage(Scene& _scene)
 
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			int r = (int)(255 * pixels[i][j].color.r);
-			int g = (int)(255 * pixels[i][j].color.g);
-			int b = (int)(255 * pixels[i][j].color.b);
-
-			img << r << " " << g << " " << b << std::endl;
+			img << pixels[i][j];
 		}
 	}
 }
