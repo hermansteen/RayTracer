@@ -9,4 +9,10 @@ Rectangle::Rectangle(vec3 point1, vec3 point2, vec3 point3, vec3 point4, colorDB
 	points[2] = point3;
 	points[3] = point4;
 	color = _color;
+	calculateNormal();
+}
+
+vec3 Rectangle::calculateIntersection(vec3 startingPoint, Direction direction)
+{
+	return vec3();
 }
