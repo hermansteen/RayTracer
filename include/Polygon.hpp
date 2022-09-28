@@ -8,6 +8,8 @@ public:
 
 	void calculateNormal();
 
+	colorDBL getColor() { return color; };
+
 	vec3 getNormal() { return normal; };
 protected:
 	//array of points which span the polygon

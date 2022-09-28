@@ -9,8 +9,12 @@ public:
 
 	void raySurfaceIntersection();
 	void setDirection(Direction);
-	Direction getDirection();
-	colorDBL getColor();
+	Direction getDirection() const { return direction; }
+	colorDBL getColor() const { return color; }
+	vec3 getStartPoint() const { return startPoint; }
+	void setEnd(const vec3& end) { endPoint = end; }
+
+	void addColor(colorDBL _color) { color += _color; }
 
 private:
 	vec3 startPoint;

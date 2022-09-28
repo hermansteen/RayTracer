@@ -10,8 +10,12 @@ Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, colorDBL _color)
 	calculateNormal();
 }
 
+//might be wrong, debug this if weird
 vec3 Triangle::calculateIntersection(vec3 startingPoint, Direction direction)
 {
-	return vec3();
+	vec3 intersection;
+	float t = glm::dot(normal, (points[0] - startingPoint)) / glm::dot(normal, direction);
+	intersection = startingPoint + t * direction;
+	return intersection;
 }
 

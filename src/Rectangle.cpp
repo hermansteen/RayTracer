@@ -14,5 +14,8 @@ Rectangle::Rectangle(vec3 point1, vec3 point2, vec3 point3, vec3 point4, colorDB
 
 vec3 Rectangle::calculateIntersection(vec3 startingPoint, Direction direction)
 {
-	return vec3();
+	vec3 intersection;
+	float t = glm::dot(normal, (points[0] - startingPoint)) / glm::dot(normal, direction);
+	intersection = startingPoint + t * direction;
+	return intersection;
 }

@@ -10,3 +10,7 @@ typedef glm::dvec3 dvec3;
 typedef glm::dvec3 colorDBL; //color vector
 typedef glm::vec3 Direction; //direction vector
 typedef glm::vec4 vertex;
+
+#define RAYSPERPIXEL 1
+#define WIDTH 800
+#define HEIGHT 800

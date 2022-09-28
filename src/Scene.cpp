@@ -5,6 +5,26 @@ Scene::Scene() {
 	createScene();
 }
 
+Polygon* Scene::getHitGeometry(const Ray& _ray, vec3& _intersection) {
+	vec3 point;
+	vec3 zeroVector = vec3(0.0f, 0.0f, 0.0f);
+	for (int i = 0; i < sceneTriangles.size(); i++) {
+		point = sceneTriangles[i].calculateIntersection(_ray.getStartPoint(), _ray.getDirection());
+		if (point != zeroVector) {
+			_intersection = point;
+			return &sceneTriangles[i];
+		}
+	}
+	for (int i = 0; i < sceneRectangles.size(); i++) {
+		point = sceneRectangles[i].calculateIntersection(_ray.getStartPoint(), _ray.getDirection());
+		if (point != zeroVector) {
+			_intersection = point;
+			return &sceneRectangles[i];
+		}
+	}
+	return nullptr;
+}
+
 void Scene::createScene() {
 	//Create the vertices for the walls, roof and floor  
 	const vec3 V1 = vec3(0.f, 6.f, 5.f);
