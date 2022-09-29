@@ -28,7 +28,6 @@ void Camera::render(Scene& _scene) {
 				}
 			}
 			screenPixel.setColor(finalRay.getColor().operator/=(RAYSPERPIXEL));
-			//@TODO, debug assignment operator
 			pixels[i][j] = screenPixel;
 		}
 	}

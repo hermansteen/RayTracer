@@ -9,21 +9,12 @@ Polygon* Scene::getHitGeometry(const Ray& _ray, vec3& _intersection) {
 	vec3 point;
 	vec3 zeroVector = vec3(0.0f, 0.0f, 0.0f);
 	float closestDist = 100.f;
-	for (int i = 0; i < sceneTriangles.size() -1; i++) {
-		point = sceneTriangles[i].calculateIntersectionPoint(_ray.getStartPoint(), _ray.getDirection());
-		if (sceneTriangles[i].intersects(_ray)) {
+	for (int i = 0; i < sceneObjects.size(); i++) {
+		point = sceneObjects[i]->calculateIntersectionPoint(_ray.getStartPoint(), _ray.getDirection());
+		if(sceneObjects[i]->intersects(_ray)) {
 			if (length((point - _ray.getStartPoint())) < closestDist) {
 				_intersection = point;
-				return &sceneTriangles[i];
-			}
-		}
-	}
-	for (int i = 0; i < sceneRectangles.size()-1; i++) {
-		point = sceneRectangles[i].calculateIntersectionPoint(_ray.getStartPoint(), _ray.getDirection());
-		if (sceneRectangles[i].intersects(_ray)) {
-			if (length((point - _ray.getStartPoint())) < closestDist) {
-				_intersection = point;
-				return &sceneRectangles[i];
+				return sceneObjects[i];
 			}
 		}
 	}
@@ -70,34 +61,32 @@ void Scene::createScene() {
 	std::vector <vec3> floorRightVertices = { V6, V12, V7 };
 
 	//create the Rectangles
-	Rectangle topLeftWall(topLeftWallVertices[0], topLeftWallVertices[1], topLeftWallVertices[2], topLeftWallVertices[3], RED);
-	Rectangle topRightWall(topRightWallVertices[0], topRightWallVertices[1], topRightWallVertices[2], topRightWallVertices[3], BLUE);
-	Rectangle topWall(topWallVertices[0], topWallVertices[1], topWallVertices[2], topWallVertices[3], YELLOW);
-	Rectangle bottomWall(bottomWallVertices[0], bottomWallVertices[1], bottomWallVertices[2], bottomWallVertices[3], GREEN);
-	Rectangle bottomLeftWall(bottomLeftWallVertices[0], bottomLeftWallVertices[1], bottomLeftWallVertices[2], bottomLeftWallVertices[3], PURPLE);
-	Rectangle bottomRightWall(bottomRightLeftWallVertices[0], bottomRightLeftWallVertices[1], bottomRightLeftWallVertices[2], bottomRightLeftWallVertices[3], CYAN);
-	Rectangle roofMiddle(roofMiddleVertices[0], roofMiddleVertices[1], roofMiddleVertices[2], roofMiddleVertices[3], WHITE);
-	Rectangle floorMiddle(floorMiddleVertices[0], floorMiddleVertices[1], floorMiddleVertices[2], floorMiddleVertices[3], GRAY);
+	Rectangle* topLeftWall = new Rectangle(topLeftWallVertices[0], topLeftWallVertices[1], topLeftWallVertices[2], topLeftWallVertices[3], RED);
+	Rectangle* topRightWall = new Rectangle(topRightWallVertices[0], topRightWallVertices[1], topRightWallVertices[2], topRightWallVertices[3], BLUE);
+	Rectangle* topWall = new Rectangle(topWallVertices[0], topWallVertices[1], topWallVertices[2], topWallVertices[3], YELLOW);
+	Rectangle* bottomWall = new Rectangle(bottomWallVertices[0], bottomWallVertices[1], bottomWallVertices[2], bottomWallVertices[3], GREEN);
+	Rectangle* bottomLeftWall = new Rectangle(bottomLeftWallVertices[0], bottomLeftWallVertices[1], bottomLeftWallVertices[2], bottomLeftWallVertices[3], PURPLE);
+	Rectangle* bottomRightWall = new Rectangle(bottomRightLeftWallVertices[0], bottomRightLeftWallVertices[1], bottomRightLeftWallVertices[2], bottomRightLeftWallVertices[3], CYAN);
+	Rectangle* roofMiddle = new Rectangle(roofMiddleVertices[0], roofMiddleVertices[1], roofMiddleVertices[2], roofMiddleVertices[3], WHITE);
+	Rectangle* floorMiddle = new Rectangle(floorMiddleVertices[0], floorMiddleVertices[1], floorMiddleVertices[2], floorMiddleVertices[3], GRAY);
 
+	sceneObjects.push_back(topLeftWall);
+	sceneObjects.push_back(topRightWall);
+	sceneObjects.push_back(topWall);
+	sceneObjects.push_back(bottomWall);
+	sceneObjects.push_back(bottomLeftWall);
+	sceneObjects.push_back(bottomRightWall);
+	sceneObjects.push_back(roofMiddle);
+	sceneObjects.push_back(floorMiddle);
+	
 	//create the triangles which make up part of the roof and floor
-	Triangle roofLeft(roofLeftVertices[0], roofLeftVertices[1], roofLeftVertices[2], WHITE);
-	Triangle roofRight(roofRightVertices[0], roofRightVertices[1], roofRightVertices[2], WHITE);
-	Triangle floorLeft(floorLeftVertices[0], floorLeftVertices[1], floorLeftVertices[2], GRAY);
-	Triangle floorRight(floorRightVertices[0], floorRightVertices[1], floorRightVertices[2], GRAY);
+	Triangle* roofLeft = new Triangle(roofLeftVertices[0], roofLeftVertices[1], roofLeftVertices[2], WHITE);
+	Triangle* roofRight = new Triangle(roofRightVertices[0], roofRightVertices[1], roofRightVertices[2], WHITE);
+	Triangle* floorLeft = new Triangle(floorLeftVertices[0], floorLeftVertices[1], floorLeftVertices[2], GRAY);
+	Triangle* floorRight = new Triangle(floorRightVertices[0], floorRightVertices[1], floorRightVertices[2], GRAY);
 
-	//add the triangles to the vector of triangles
-	sceneTriangles.push_back(roofLeft);
-	sceneTriangles.push_back(roofRight);
-	sceneTriangles.push_back(floorLeft);
-	sceneTriangles.push_back(floorRight);
-
-	//add the rectangles to the vector of rectangles
-	sceneRectangles.push_back(topLeftWall);
-	sceneRectangles.push_back(topRightWall);
-	sceneRectangles.push_back(topWall);
-	sceneRectangles.push_back(bottomWall);
-	sceneRectangles.push_back(bottomLeftWall);
-	sceneRectangles.push_back(bottomRightWall);
-	sceneRectangles.push_back(roofMiddle);
-	sceneRectangles.push_back(floorMiddle);
+	sceneObjects.push_back(roofLeft);
+	sceneObjects.push_back(roofRight);
+	sceneObjects.push_back(floorLeft);
+	sceneObjects.push_back(floorRight);
 }

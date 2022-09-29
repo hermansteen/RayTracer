@@ -12,7 +12,6 @@ int main() {
 	camera.render(scene);
 	camera.saveImage(scene);
 	
-	//end 
 	auto end = std::chrono::high_resolution_clock::now();
 	//print time elapsed in seconds
 	std::cout << "Time elapsed: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << "s" << std::endl;

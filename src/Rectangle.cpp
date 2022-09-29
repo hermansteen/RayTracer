@@ -10,6 +10,7 @@ Rectangle::Rectangle(vec3 point1, vec3 point2, vec3 point3, vec3 point4, colorDB
 	points[3] = point4;
 	color = _color;
 	calculateNormal();
+	surfaceType = "DIFFUSE";
 }
 
 vec3 Rectangle::calculateIntersectionPoint(vec3 startingPoint, Direction direction)
