@@ -11,7 +11,7 @@ Polygon* Scene::getHitGeometry(const Ray& _ray, vec3& _intersection) {
 	float closestDist = 100.f;
 	for (int i = 0; i < sceneObjects.size(); i++) {
 		point = sceneObjects[i]->calculateIntersectionPoint(_ray.getStartPoint(), _ray.getDirection());
-		if(sceneObjects[i]->intersects(_ray)) {
+		if (sceneObjects[i]->intersects(_ray)) {
 			if (length((point - _ray.getStartPoint())) < closestDist) {
 				_intersection = point;
 				return sceneObjects[i];
@@ -35,6 +35,8 @@ void Scene::createScene() {
 	const vec3 V10 = vec3(0.f, -6.f, 5.f);
 	const vec3 V11 = vec3(10.f, -6.f, 5.f);
 	const vec3 V12 = vec3(10.f, -6.f, -5.f);
+
+	const vec3 sphereCenter = vec3(5.f, 0.f, 0.f);
 
 	//Create the colors for the walls, roof and floor
 	const colorDBL RED = colorDBL(1.0, 0.0, 0.0);
@@ -70,6 +72,7 @@ void Scene::createScene() {
 	Rectangle* roofMiddle = new Rectangle(roofMiddleVertices[0], roofMiddleVertices[1], roofMiddleVertices[2], roofMiddleVertices[3], WHITE);
 	Rectangle* floorMiddle = new Rectangle(floorMiddleVertices[0], floorMiddleVertices[1], floorMiddleVertices[2], floorMiddleVertices[3], GRAY);
 
+
 	sceneObjects.push_back(topLeftWall);
 	sceneObjects.push_back(topRightWall);
 	sceneObjects.push_back(topWall);
@@ -78,7 +81,7 @@ void Scene::createScene() {
 	sceneObjects.push_back(bottomRightWall);
 	sceneObjects.push_back(roofMiddle);
 	sceneObjects.push_back(floorMiddle);
-	
+
 	//create the triangles which make up part of the roof and floor
 	Triangle* roofLeft = new Triangle(roofLeftVertices[0], roofLeftVertices[1], roofLeftVertices[2], WHITE);
 	Triangle* roofRight = new Triangle(roofRightVertices[0], roofRightVertices[1], roofRightVertices[2], WHITE);
@@ -89,4 +92,7 @@ void Scene::createScene() {
 	sceneObjects.push_back(roofRight);
 	sceneObjects.push_back(floorLeft);
 	sceneObjects.push_back(floorRight);
+
+	Sphere* sphere = new Sphere(sphereCenter, 3.0, WHITE);
+	sceneObjects.push_back(sphere);
 }

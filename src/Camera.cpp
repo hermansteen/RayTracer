@@ -12,15 +12,14 @@ Camera::Camera() {
 }
 
 void Camera::render(Scene& _scene) {
-	
-	for(int i = 0; i < WIDTH; i++) {
-		for(int j = 0; j < HEIGHT;j++) {
+	for (int i = 0; i < WIDTH; i++) {
+		for (int j = 0; j < HEIGHT; j++) {
 			Pixel screenPixel;
 			Ray finalRay = Ray(vec3(0.0f), vec3(0.0f));
-			for(int k = 0; k < RAYSPERPIXEL; k++) {
-				for(int l = 0; l < RAYSPERPIXEL; l++ ) {
+			for (int k = 0; k < RAYSPERPIXEL; k++) {
+				for (int l = 0; l < RAYSPERPIXEL; l++) {
 					vec3 rayEnd = screenPixel.getPointFromPixel(i, j, l, k);
-		
+
 					Ray shotRay = Ray(eye, glm::normalize((rayEnd - eye)));
 					screenPixel.addRay(shotRay);
 					colorDBL shotColor = shootRay(_scene, shotRay);
@@ -71,7 +70,13 @@ colorDBL Camera::shootRay(Scene& _scene, Ray& _ray) {
 	if ((length(_ray.getStartPoint() - rayEnd) < distanceToIntersection) && (hitPolygon != nullptr)) {
 		intersectionPoint = rayEnd;
 		distanceToIntersection = length(_ray.getStartPoint() - rayEnd);
-		_ray.addColor(hitPolygon->getColor());
+		if (hitPolygon->getSurfaceType() == "DIFFUSE" || hitPolygon->getSurfaceType() == "LIGHTSOURCE") {
+			_ray.addColor(hitPolygon->getColor());
+		}
+		else if (hitPolygon->getSurfaceType() == "MIRROR") {
+			//@TODO get normal of hitPolygon to calculate the outgoing rays direction.
+			//@TODO see if we can override the Polygon method "calculateNormal" in the class Shpere.   
+		}
 	}
 	return _ray.getColor();
 }
