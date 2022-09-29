@@ -10,7 +10,7 @@ public:
 
 	void addRay(Ray&);
 
-	vec3 getPointFromPixel(int y, int z, int k, int l, int raysPerPixel);
+	vec3 getPointFromPixel(int y, int z, int k, int l);
 
 	void setColor(const colorDBL& color) { this->color = color; }
 private:

@@ -2,7 +2,7 @@
 
 Pixel::Pixel() {
 	color = colorDBL(0.0, 0.0, 0.0);
-	Ray rayFromEye = Ray(vec3(0.0f), vec3(0.0f));
+	Ray rayFromEye(vec3(0.0f), vec3(0.0f));
 	rayList.push_back(rayFromEye);
 }
 
@@ -11,7 +11,7 @@ void Pixel::addRay(Ray& _ray) {
 	*rayList.begin() = _ray;
 }
 
-vec3 Pixel::getPointFromPixel(int y, int z, int k, int l, int raysPerPixel) {
+vec3 Pixel::getPointFromPixel(int y, int z, int k, int l) {
 	float displacement = (float)rand() / RAND_MAX;
 
 	float tminy = 0.0f + 0.00125 * l;

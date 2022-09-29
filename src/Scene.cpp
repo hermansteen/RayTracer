@@ -8,18 +8,23 @@ Scene::Scene() {
 Polygon* Scene::getHitGeometry(const Ray& _ray, vec3& _intersection) {
 	vec3 point;
 	vec3 zeroVector = vec3(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < sceneTriangles.size(); i++) {
-		point = sceneTriangles[i].calculateIntersection(_ray.getStartPoint(), _ray.getDirection());
-		if (point != zeroVector) {
-			_intersection = point;
-			return &sceneTriangles[i];
+	float closestDist = 100.f;
+	for (int i = 0; i < sceneTriangles.size() -1; i++) {
+		point = sceneTriangles[i].calculateIntersectionPoint(_ray.getStartPoint(), _ray.getDirection());
+		if (sceneTriangles[i].intersects(_ray)) {
+			if (length((point - _ray.getStartPoint())) < closestDist) {
+				_intersection = point;
+				return &sceneTriangles[i];
+			}
 		}
 	}
-	for (int i = 0; i < sceneRectangles.size(); i++) {
-		point = sceneRectangles[i].calculateIntersection(_ray.getStartPoint(), _ray.getDirection());
-		if (point != zeroVector) {
-			_intersection = point;
-			return &sceneRectangles[i];
+	for (int i = 0; i < sceneRectangles.size()-1; i++) {
+		point = sceneRectangles[i].calculateIntersectionPoint(_ray.getStartPoint(), _ray.getDirection());
+		if (sceneRectangles[i].intersects(_ray)) {
+			if (length((point - _ray.getStartPoint())) < closestDist) {
+				_intersection = point;
+				return &sceneRectangles[i];
+			}
 		}
 	}
 	return nullptr;
@@ -49,7 +54,7 @@ void Scene::createScene() {
 	const colorDBL GRAY = colorDBL(0.5, 0.5, 0.5);
 	const colorDBL WHITE = colorDBL(1.0, 1.0, 1.0);
 	const colorDBL CYAN = colorDBL(0.0, 1.0, 1.0);
-	
+
 	//create the vectors of vertices for the walls, roof and floor
 	std::vector <vec3> topLeftWallVertices = { V2, V1, V4 ,V3 };
 	std::vector <vec3> topRightWallVertices = { V5, V6, V7, V8 };
@@ -73,19 +78,19 @@ void Scene::createScene() {
 	Rectangle bottomRightWall(bottomRightLeftWallVertices[0], bottomRightLeftWallVertices[1], bottomRightLeftWallVertices[2], bottomRightLeftWallVertices[3], CYAN);
 	Rectangle roofMiddle(roofMiddleVertices[0], roofMiddleVertices[1], roofMiddleVertices[2], roofMiddleVertices[3], WHITE);
 	Rectangle floorMiddle(floorMiddleVertices[0], floorMiddleVertices[1], floorMiddleVertices[2], floorMiddleVertices[3], GRAY);
-	
+
 	//create the triangles which make up part of the roof and floor
 	Triangle roofLeft(roofLeftVertices[0], roofLeftVertices[1], roofLeftVertices[2], WHITE);
 	Triangle roofRight(roofRightVertices[0], roofRightVertices[1], roofRightVertices[2], WHITE);
 	Triangle floorLeft(floorLeftVertices[0], floorLeftVertices[1], floorLeftVertices[2], GRAY);
 	Triangle floorRight(floorRightVertices[0], floorRightVertices[1], floorRightVertices[2], GRAY);
-	
+
 	//add the triangles to the vector of triangles
 	sceneTriangles.push_back(roofLeft);
 	sceneTriangles.push_back(roofRight);
 	sceneTriangles.push_back(floorLeft);
 	sceneTriangles.push_back(floorRight);
-	
+
 	//add the rectangles to the vector of rectangles
 	sceneRectangles.push_back(topLeftWall);
 	sceneRectangles.push_back(topRightWall);

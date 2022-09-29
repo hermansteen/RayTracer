@@ -15,20 +15,21 @@ void Camera::render(Scene& _scene) {
 	
 	for(int i = 0; i < WIDTH; i++) {
 		for(int j = 0; j < HEIGHT;j++) {
-			Pixel p;
-			Ray rays = Ray(vec3(0.0f), vec3(0.0f));
-
-			for(int k = 0; k < 1; k++) {
-				for(int l = 0; l < 1; l++ ) {
-					vec3 rayEnd = p.getPointFromPixel(i, j, l, k, RAYSPERPIXEL);
-					Ray shotRay = Ray(eye, (rayEnd - eye));
-					p.addRay(shotRay);
+			Pixel screenPixel;
+			Ray finalRay = Ray(vec3(0.0f), vec3(0.0f));
+			for(int k = 0; k < RAYSPERPIXEL; k++) {
+				for(int l = 0; l < RAYSPERPIXEL; l++ ) {
+					vec3 rayEnd = screenPixel.getPointFromPixel(i, j, l, k);
+		
+					Ray shotRay = Ray(eye, glm::normalize((rayEnd - eye)));
+					screenPixel.addRay(shotRay);
 					colorDBL shotColor = shootRay(_scene, shotRay);
-					rays.addColor(shotColor);
+					finalRay.addColor(shotColor);
 				}
 			}
-			p.setColor(rays.getColor().operator/=(RAYSPERPIXEL));
-			pixels[i][j] = p;
+			screenPixel.setColor(finalRay.getColor().operator/=(RAYSPERPIXEL));
+			//@TODO, debug assignment operator
+			pixels[i][j] = screenPixel;
 		}
 	}
 }
@@ -43,9 +44,9 @@ void Camera::saveImage(Scene& _scene)
 	img << "255" << std::endl;
 	render(_scene);
 
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
-			img << pixels[i][j];
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			img << pixels[j][i];
 		}
 	}
 }
@@ -68,7 +69,7 @@ colorDBL Camera::shootRay(Scene& _scene, Ray& _ray) {
 
 	Polygon* hitPolygon = _scene.getHitGeometry(_ray, intersectionPoint);
 
-	if (length(_ray.getStartPoint() - rayEnd) < distanceToIntersection) {
+	if ((length(_ray.getStartPoint() - rayEnd) < distanceToIntersection) && (hitPolygon != nullptr)) {
 		intersectionPoint = rayEnd;
 		distanceToIntersection = length(_ray.getStartPoint() - rayEnd);
 		_ray.addColor(hitPolygon->getColor());

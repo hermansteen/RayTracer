@@ -10,6 +10,7 @@ public:
 
 	void createScene();
 
+	//might be possible to refactor to std::vector<Polygon*> scenePolygons
 	std::vector<Triangle> sceneTriangles;
 	std::vector<Rectangle> sceneRectangles;
 
