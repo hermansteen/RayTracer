@@ -75,7 +75,18 @@ colorDBL Camera::shootRay(Scene& _scene, Ray& _ray) {
 		}
 		else if (hitPolygon->getSurfaceType() == "MIRROR") {
 			//@TODO get normal of hitPolygon to calculate the outgoing rays direction.
-			//@TODO see if we can override the Polygon method "calculateNormal" in the class Shpere.   
+			//@TODO see if we can override the Polygon method "calculateNormal" in the class Shpere.  
+			//if hitPolygon is a sphere
+			if(russianRoulette(hitPolygon->getColor())) {
+			if (hitPolygon->isSphere) {
+				//cast polygon to sphere
+				Sphere* sphere = static_cast<Sphere*>(hitPolygon);
+				_ray.bounce(intersectionPoint, sphere->getSphereNormal(intersectionPoint), true, 0.f);
+			} else{
+				Ray bouncedRay = _ray.bounce(intersectionPoint, hitPolygon->getNormal(), true, 1.f);
+				return shootRay(_scene, bouncedRay);
+			} 
+			}
 		}
 	}
 	return _ray.getColor();

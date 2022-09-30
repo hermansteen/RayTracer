@@ -10,4 +10,5 @@ public:
 
 	bool intersects(const Ray&) override;
 private:
+	
 };

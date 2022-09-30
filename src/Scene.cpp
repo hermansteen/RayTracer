@@ -72,6 +72,8 @@ void Scene::createScene() {
 	Rectangle* roofMiddle = new Rectangle(roofMiddleVertices[0], roofMiddleVertices[1], roofMiddleVertices[2], roofMiddleVertices[3], WHITE);
 	Rectangle* floorMiddle = new Rectangle(floorMiddleVertices[0], floorMiddleVertices[1], floorMiddleVertices[2], floorMiddleVertices[3], GRAY);
 
+	Sphere* sphere = new Sphere(sphereCenter, 3.0, WHITE);
+	sceneObjects.push_back(sphere);
 
 	sceneObjects.push_back(topLeftWall);
 	sceneObjects.push_back(topRightWall);
@@ -93,6 +95,4 @@ void Scene::createScene() {
 	sceneObjects.push_back(floorLeft);
 	sceneObjects.push_back(floorRight);
 
-	Sphere* sphere = new Sphere(sphereCenter, 3.0, WHITE);
-	sceneObjects.push_back(sphere);
 }

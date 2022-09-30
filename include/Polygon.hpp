@@ -2,6 +2,7 @@
 #include "definitions.hpp"
 #include <string>
 
+
 class Ray;
 class Polygon {
 public:
@@ -9,13 +10,14 @@ public:
 
 	virtual bool intersects(const Ray&) = 0;
 
-	virtual void calculateNormal();
+	void calculateNormal();
 
 	colorDBL getColor() const { return color; };
 
 	std::string getSurfaceType() const { return surfaceType; };
 
 	vec3 getNormal() const{ return normal; };
+	bool isSphere = false;
 protected:
 	//array of points which span the polygon
 	vec3* points;
