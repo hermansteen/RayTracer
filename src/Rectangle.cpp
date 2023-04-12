@@ -1,6 +1,6 @@
 #include "Rectangle.hpp"
 
-Rectangle::Rectangle(vec3 point1, vec3 point2, vec3 point3, vec3 point4, colorDBL _color)
+Rectangle::Rectangle(vec3 point1, vec3 point2, vec3 point3, vec3 point4, colorDBL _color, std::string _surface)
 {
 	//instantiate points vector
 	points = new vec3[4];
@@ -10,7 +10,9 @@ Rectangle::Rectangle(vec3 point1, vec3 point2, vec3 point3, vec3 point4, colorDB
 	points[3] = point4;
 	color = _color;
 	calculateNormal();
-	surfaceType = "DIFFUSE";
+	surfaceType = _surface;
+	isSphere = false;
+		
 }
 
 vec3 Rectangle::calculateIntersectionPoint(vec3 startingPoint, Direction direction)
@@ -23,12 +25,13 @@ vec3 Rectangle::calculateIntersectionPoint(vec3 startingPoint, Direction directi
 
 //calculate if ray intersects quad using moller trumbore algorithm
 bool Rectangle::intersects(const Ray& _ray) {
-	Triangle triangle1 = Triangle(points[0], points[1], points[2], color);
-	Triangle triangle2 = Triangle(points[0], points[2], points[3], color);
+	Triangle triangle1 = Triangle(points[0], points[1], points[2], color, surfaceType);
+	Triangle triangle2 = Triangle(points[0], points[2], points[3], color, surfaceType);
+	
 	if (triangle1.intersects(_ray) || triangle2.intersects(_ray)) {
 		return true;
 	}
 	else {
 		return false;
-	} 
+	}
 }

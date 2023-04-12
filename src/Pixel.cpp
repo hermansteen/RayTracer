@@ -3,13 +3,13 @@
 Pixel::Pixel() {
 	color = colorDBL(0.0, 0.0, 0.0);
 	Ray rayFromEye(vec3(0.0f), vec3(0.0f));
-	rayList.push_back(rayFromEye);
+	//rayList.push_back(rayFromEye); <- Might be a problem
 }
 
-void Pixel::addRay(Ray& _ray) {
+/*void Pixel::addRay(Ray& _ray) { <- Might be a problem
 	color = _ray.getColor();
 	*rayList.begin() = _ray;
-}
+}*/
 
 vec3 Pixel::getPointFromPixel(int y, int z, int k, int l) {
 	float displacement = (float)rand() / RAND_MAX;
