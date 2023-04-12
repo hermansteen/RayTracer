@@ -23,18 +23,18 @@ Polygon* Scene::getHitGeometry(const Ray& _ray, vec3& _intersection) {
 
 void Scene::createScene() {
 	//Create the vertices for the walls, roof and floor  
-	const vec3 V1 = vec3(0.f, 6.f, 5.f);
-	const vec3 V2 = vec3(0.f, 6.f, -5.f);
-	const vec3 V3 = vec3(-3.f, 0.f, -5.f);
-	const vec3 V4 = vec3(-3.f, 0.f, 5.f);
-	const vec3 V5 = vec3(10.f, 6.f, 5.f);
-	const vec3 V6 = vec3(10.f, 6.f, -5.f);
-	const vec3 V7 = vec3(13.f, 0.f, -5.f);
-	const vec3 V8 = vec3(13.f, 0.f, 5.f);
-	const vec3 V9 = vec3(0.f, -6.f, -5.f);
-	const vec3 V10 = vec3(0.f, -6.f, 5.f);
-	const vec3 V11 = vec3(10.f, -6.f, 5.f);
-	const vec3 V12 = vec3(10.f, -6.f, -5.f);
+	const vec3 V1 = vec3(0.0f, 6.0f, 5.0f);
+	const vec3 V2 = vec3(0.0f, 6.0f, -5.0f);
+	const vec3 V3 = vec3(-3.0f, 0.0f, -5.0f);
+	const vec3 V4 = vec3(-3.0f, 0.0f, 5.0f);
+	const vec3 V5 = vec3(10.0f, 6.0f, 5.0f);
+	const vec3 V6 = vec3(10.0f, 6.0f, -5.0f);
+	const vec3 V7 = vec3(13.0f, 0.0f, -5.0f);
+	const vec3 V8 = vec3(13.0f, 0.0f, 5.0f);
+	const vec3 V9 = vec3(0.0f, -6.0f, -5.0f);
+	const vec3 V10 = vec3(0.0f, -6.0f, 5.0f);
+	const vec3 V11 = vec3(10.0f, -6.0f, 5.0f);
+	const vec3 V12 = vec3(10.0f, -6.0f, -5.0f);
 
 	const vec3 sphereCenter = vec3(5.f, 0.f, 0.f);
 
@@ -47,6 +47,9 @@ void Scene::createScene() {
 	const colorDBL GRAY = colorDBL(0.5, 0.5, 0.5);
 	const colorDBL WHITE = colorDBL(1.0, 1.0, 1.0);
 	const colorDBL CYAN = colorDBL(0.0, 1.0, 1.0);
+
+	//Sphere* sphere = new Sphere(sphereCenter, 3.0, WHITE);
+	//sceneObjects.push_back(sphere);
 
 	//create the vectors of vertices for the walls, roof and floor
 	std::vector <vec3> topLeftWallVertices = { V2, V1, V4 ,V3 };

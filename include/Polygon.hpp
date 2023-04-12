@@ -17,7 +17,7 @@ public:
 	std::string getSurfaceType() const { return surfaceType; };
 
 	vec3 getNormal() const{ return normal; };
-	bool isSphere = false;
+	bool isSphere;
 protected:
 	//array of points which span the polygon
 	vec3* points;
