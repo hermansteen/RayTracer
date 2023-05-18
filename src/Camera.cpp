@@ -1,7 +1,14 @@
 #include "Camera.hpp"
 #include <fstream>
 
-
+/**
+ * @brief Default constructor for the Camera class.
+ *
+ * This constructor initializes a Camera object by setting up the camera plane vertices
+ * and allocating memory for the pixel grid. The camera plane vertices define the boundaries
+ * of the camera's field of view. The pixel grid is a 2D array of Pixel objects used to store
+ * the color information for each pixel in the rendered image.
+ */
 Camera::Camera() {
 	cameraPlaneVertex[0][0] = vec3(0.0f, -1.0f, -1.0f);
 	cameraPlaneVertex[1][0] = vec3(0.0f, 1.0f, -1.0f);
@@ -12,6 +19,18 @@ Camera::Camera() {
 	}
 }
 
+/**
+ * @brief Renders the scene by calculating the color of each pixel.
+ *
+ * This function captures the scene by calculating the color of each pixel in the image.
+ * It performs subsampling to improve the quality of the rendered image. For each pixel,
+ * multiple rays are shot from different positions within the pixel, and their colors are
+ * averaged to determine the final color for the pixel. The process is repeated for all
+ * pixels in the image. Progress updates are provided during the rendering process, indicating
+ * the number of pixels calculated and the percentage of the rendering progress.
+ *
+ * @param _scene The scene to be rendered.
+ */
 void Camera::render(Scene& _scene) {
 	std::cout << "Capturing scene..." << "\n";
 	std::cout << "Number of pixels to calculate: " << WIDTH * HEIGHT << "\n";
@@ -50,7 +69,16 @@ void Camera::render(Scene& _scene) {
 		}
 	}
 }
-//Save as .ppm-file
+/**
+ * @brief Saves the rendered image to a PPM file.
+ *
+ * This function saves the rendered image to a PPM file format. It iterates over the pixels
+ * in the image and writes their color values to the file. Additionally, it provides progress
+ * updates during the saving process, displaying the number of pixels saved and the percentage
+ * of the image saved.
+ *
+ * @param _scene The scene containing the rendered image.
+ */
 void Camera::saveImage(Scene& _scene)
 {	
 	std::cout << "Saving image..." << "\n";
@@ -76,7 +104,17 @@ void Camera::saveImage(Scene& _scene)
 	std::cout << "Image saved!" << "\n";
 }
 
-//Russian roulette
+/**
+ * @brief Determines whether a ray should be terminated or continued based on a probabilistic criterion.
+ *
+ * This function implements a simplified version of the Russian roulette algorithm
+ * to make a decision about terminating or continuing a ray in a rendering process.
+ * The decision is based on a randomized probability calculation and the color of the
+ * polygon that the ray last intersected with.
+ *
+ * @param areaCol The color of the polygon the ray last intersected with.
+ * @return `true` if the ray should be terminated, `false` if it should be continued.
+ */
 bool Camera::russianRoulette(const colorDBL& areaCol) {
 	
 	float random = (float)rand() / (float)RAND_MAX;
@@ -89,7 +127,20 @@ bool Camera::russianRoulette(const colorDBL& areaCol) {
 	}
 }
 
-
+/**
+ * @brief Shoots a ray into the scene and calculates the color of the intersection point.
+ *
+ * This function shoots a ray into the scene and calculates the color of the intersection point.
+ * It performs various calculations depending on the properties of the hit polygon, such as diffuse
+ * reflection, mirror reflection, and light emission. The function also handles ray splitting and
+ * recursive ray tracing for global illumination effects. The resulting color is clamped to ensure
+ * it does not exceed the maximum value of 1.0 before being returned.
+ *
+ * @param _scene The scene containing the geometry and light sources.
+ * @param _ray The ray to be shot into the scene.
+ * @param _bounces The maximum number of ray bounces allowed for recursive ray tracing.
+ * @return The color of the intersection point.
+ */
 colorDBL Camera::shootRay(Scene& _scene, Ray& _ray, int _bounces) {
 	
 	if (_bounces >= 0) {
@@ -197,6 +248,19 @@ colorDBL Camera::shootRay(Scene& _scene, Ray& _ray, int _bounces) {
 
 
 //Check if the ray between the intersection point and the light source is blocked by another polygon
+/**
+ * @brief Checks if a point is in shade from a light source.
+ *
+ * This function checks if a given point is in shade from a light source in the scene.
+ * It creates a ray from the point towards the light source and checks if any geometry
+ * intersects with the ray before reaching the light source. If an intersection occurs
+ * with a polygon that is not a light source, the point is considered to be in shade.
+ *
+ * @param _scene The scene containing the geometry and light sources.
+ * @param _lightDirection The direction of the light source.
+ * @param _intersectionPoint The point to be checked for shading.
+ * @return True if the point is in shade, False otherwise.
+ */
 bool Camera::inShade(Scene& _scene, Direction _lightDirection, vec3 _intersectionPoint ) {
 
 	Ray lightRay = Ray(_intersectionPoint, _lightDirection);
@@ -214,6 +278,22 @@ bool Camera::inShade(Scene& _scene, Direction _lightDirection, vec3 _intersectio
 }
 
 //Calculate the radiance from the light source at the point of intersection
+/**
+ * @brief Calculates the light contribution at a given intersection point.
+ *
+ * This function calculates the light contribution at a given intersection point by
+ * considering all the light sources in the scene. It uses Monte Carlo integration
+ * to estimate the light contribution by sampling points on the light sources.
+ * The light calculation takes into account the BRDF (Bidirectional Reflectance
+ * Distribution Function), distance, angles between the surface normal and the
+ * light direction, and the surface area of the light source.
+ *
+ * @param _intersectionPoint The point of intersection on the surface.
+ * @param _scene The scene containing the geometry and light sources.
+ * @param _normal The surface normal at the intersection point.
+ * @param _BRDF The BRDF (Bidirectional Reflectance Distribution Function) value.
+ * @return The calculated light contribution at the intersection point.
+ */
 double Camera::lightCalculation(vec3 _intersectionPoint, Scene& _scene, vec3 _normal, double _BRDF) {
 
 	const double L = 3200.0;

@@ -1,5 +1,12 @@
 #include "Polygon.hpp"
 
+/**
+ * @brief Calculate the normal vector of the Polygon.
+ *
+ * This function calculates the normal vector of the Polygon by taking the cross product
+ * of two edge vectors formed by the first three vertices of the Polygon. The result is
+ * then normalized to ensure a unit length.
+ */
 void Polygon::calculateNormal() {
 	// Calculate the normal of the polygon
 	// The normal is the cross product of two vectors of the polygon

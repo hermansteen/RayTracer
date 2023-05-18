@@ -2,10 +2,23 @@
 #include <iostream>
 #include <vector>
 
+/**
+ * @brief Default constructor for the Scene class.
+ *
+ * This constructor creates the scene by calling the createScene() function.
+ */
 Scene::Scene() {
 	createScene();
 }
 
+/**
+ * @brief Retrieves the geometry object that is hit by a given ray in the scene.
+ *
+ * @param _ray The ray to check for intersection with the scene objects.
+ * @param _intersection Output parameter to store the intersection point if found.
+ * @param _isShadowRay Specifies whether the ray is a shadow ray.
+ * @return A pointer to the Polygon object that is hit by the ray, or nullptr if no intersection is found.
+ */
 Polygon* Scene::getHitGeometry(Ray& _ray, vec3& _intersection, bool _isShadowRay) {
 	vec3 point = vec3(0.0f);
 
@@ -42,6 +55,14 @@ Polygon* Scene::getHitGeometry(Ray& _ray, vec3& _intersection, bool _isShadowRay
 	return nullptr;
 }
 
+/**
+ * @brief Create the scene by defining the vertices, colors, and objects.
+ * 
+ * This function creates the scene by defining the vertices for the walls, roof, floor, and other objects.
+ * It also sets the colors for the different elements in the scene.
+ * The function creates and initializes the objects (rectangles, triangles, and sphere) that make up the scene.
+ * Finally, it adds the objects to the sceneObjects vector and identifies the light sources in the scene.
+ */
 void Scene::createScene() {
 	//Create the vertices for the walls, roof and floor  
 	const vec3 V1 = vec3(0.0f, 6.0f, 5.0f);
@@ -77,17 +98,17 @@ void Scene::createScene() {
 	std::vector <vec3> bottomLeftWallVertices = { V4, V10, V9 ,V3 };
 	std::vector <vec3> bottomRightLeftWallVertices = { V8, V7, V12, V11 };
 	std::vector <vec3> bottomWallVertices = { V10, V11, V12, V9 };
-	std::vector <vec3> roofMiddleVertices = { V11, V10, V1, V5 }; // Byt plats på V5 och V10!!
+	std::vector <vec3> roofMiddleVertices = { V11, V10, V1, V5 }; // Byt plats pï¿½ V5 och V10!!
 	std::vector <vec3> roofLeftVertices = { V1, V10, V4 };
 	std::vector <vec3> roofRightVertices = { V5, V8, V11 };
 	std::vector <vec3> floorMiddleVertices = { V2, V9, V12 ,V6 };
 	std::vector <vec3> floorLeftVertices = { V2, V3, V9 };
 	std::vector <vec3> floorRightVertices = { V6, V12, V7 };
 
-	//Det blir skuggor på väggarna från sfären, bör inte bli så. Shadowray = fel?? Skickas shadow rayen från ögat och inte intersectionpoint??
+	//Det blir skuggor pï¿½ vï¿½ggarna frï¿½n sfï¿½ren, bï¿½r inte bli sï¿½. Shadowray = fel?? Skickas shadow rayen frï¿½n ï¿½gat och inte intersectionpoint??
 	//Golv kolsvart, fel normaler?
-	//Röd vägg samt tak också kolsvart i spegel.
-	//Specular är svart???
+	//Rï¿½d vï¿½gg samt tak ocksï¿½ kolsvart i spegel.
+	//Specular ï¿½r svart???
 
 
 	//create the Rectangles //Have changed index 3 and 1 here!

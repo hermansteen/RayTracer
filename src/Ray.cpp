@@ -1,10 +1,25 @@
 #include "Ray.hpp"
 
+/**
+ * @brief Constructs a Ray object with the given starting point and direction.
+ *
+ * @param startingPoint The starting point of the Ray.
+ * @param direction The direction of the Ray.
+ */
 Ray::Ray(vec3 startingPoint, Direction direction) {
 	startPoint = startingPoint;
 	this->direction = direction;
 	color = colorDBL(0.0f, 0.0f, 0.0f);
 }
+
+
+/**
+ * @brief Removes the last Ray in the linked list of Ray objects.
+ *
+ * If the Ray has a nextRay pointer, this function removes the last Ray in the
+ * linked list by traversing to the end and updating the pointers accordingly.
+ * It also deallocates the memory for the removed Ray object.
+ */
 void Ray::removeLastRay() {
 	if (nextRay != nullptr) {
 		Ray* temp = nextRay;		
@@ -18,7 +33,11 @@ void Ray::removeLastRay() {
 	
 }
 
-
+/**
+ * @brief Sets the next Ray object in the linked list.
+ *
+ * @param _nextRay Pointer to the next Ray object.
+ */
 void Ray::setNextRay(Ray* _nextRay) {
 	nextRay = _nextRay;
 	_nextRay->setPreviousRay(this);
